@@ -17,7 +17,7 @@ namespace CodeKata
 
                 if (num % 2 == 0)
                 {
-                    answer = "EVen";
+                    answer = "Even";
                 }
                 else
                 {
