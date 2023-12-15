@@ -1,27 +1,33 @@
 ﻿using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
+using System.Reflection;
 
+public abstract class KataBase
+{
+    public abstract void Example();
+}
 namespace CodeKata
 {
-    internal class Program
+    public static class Program
     {
-        public class Solution
+        public static void Main()
         {
-            public double solution(int[] numbers)
-            {
-                double sum = 0;
-                for (int i = 0; i < numbers.Length; i++)
-                {
-                    sum += numbers[i];
-                }
-                double answer = sum / numbers.Length;
-                Console.WriteLine(answer);
-                return Math.Round(answer);
-            }
-        }
-        static void Main(string[] args)
-        {
+            Console.WriteLine("실행하고자 하는 문제의 Class Name을 적어주세요:");
+            string problemClassName = Console.ReadLine();
 
+            var testType = Assembly.GetExecutingAssembly().GetTypes()
+                .FirstOrDefault(t => t.IsSubclassOf(typeof(KataBase)) && t.Name == problemClassName);
+
+            if (testType != null)
+            {
+                var instance = Activator.CreateInstance(testType) as KataBase;
+                instance?.Example();
+            }
+            else
+            {
+                Console.WriteLine($"Problem class '{problemClassName}' not found.");
+            }
         }
     }
 }
